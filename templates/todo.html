@@ -7,15 +7,30 @@
 
     <!-- Form for adding new tasks -->
     <form action="" method="POST" class="d-flex mb-4 gap-2">
-        <input type="text" name="task" class="form-control" placeholder="Wpisz nowe zadanie" required>
-        <select name="priority" class="form-control" required>
-          <option value="low">Niski</option>
-          <option value="medium">Średni</option>
-          <option value="high">Wysoki</option>
+        <input type="text" name="task" class="form-control form-control-lg" placeholder="Wpisz nowe zadanie" required>
+
+        <select name="priority" class="form-select form-select-lg" required>
+            <option value="" disabled selected>- Wybierz priorytet -</option>
+              <option value="low">Niski</option>
+              <option value="medium">Średni</option>
+              <option value="high">Wysoki</option>
         </select>
+
         <button type="submit" class="btn btn-success flex-shrink-0 px-3"><i class="bi bi-plus-circle"></i> Dodaj</button>
     </form>
 
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="alert-container">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
 
     {% if tasks %}
         <h5 class="mb-3">Lista:</h5>

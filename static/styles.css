@@ -20,4 +20,11 @@
             box-sizing: border-box;
             min-width: 300px;
             color: white;
-        }
+}
+
+
+/* Dostosowanie select do wartości */
+.form-select.form-select-lg {
+    max-width: 250px;  /* Dopasowanie szerokości select do długości opcji */
+    padding-right: 2.5rem;  /* Miejsce na strzałkę */
+}
