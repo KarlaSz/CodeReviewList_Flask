@@ -77,3 +77,7 @@ def edit_task(task_id):
         return redirect(url_for('todo'))  # after saving back to home page
 
     return render_template('edit_task.html', task=task)
+
+#debugging for testing
+if __name__ == '__main__':
+    app.run(debug=True)
