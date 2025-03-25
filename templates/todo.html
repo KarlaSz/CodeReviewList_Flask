@@ -6,14 +6,14 @@
     <h1 class="text-center mb-4">Code Review List</h1>
 
     <!-- Form for adding new tasks -->
-    <form action="" method="POST" class="d-flex mb-4 gap-2">
+    <form action="" method="POST" class="d-flex mb-4 gap-3">
         <input type="text" name="task" class="form-control form-control-lg" placeholder="Wpisz nowe zadanie" required>
 
         <select name="priority" class="form-select form-select-lg" required>
             <option value="" disabled selected>- Wybierz priorytet -</option>
-              <option value="low">Niski</option>
-              <option value="medium">Średni</option>
-              <option value="high">Wysoki</option>
+            <option value="low">Niski</option>
+            <option value="medium">Średni</option>
+            <option value="high">Wysoki</option>
         </select>
 
         <button type="submit" class="btn btn-success flex-shrink-0 px-3"><i class="bi bi-plus-circle"></i> Dodaj</button>
@@ -33,45 +33,55 @@
     {% endwith %}
 
     {% if tasks %}
-        <h5 class="mb-3">Lista:</h5>
-        <!-- List of tasks -->
-        <ul class="list-group">
-            {% for task in tasks %}
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span>{{ task.name }}</span>
+        <h5 class="mb-3">Lista zadań:</h5>
 
-                    <span class="badge
-                      {% if task.priority == 'low' %} bg-success
-                      {% elif task.priority == 'medium' %} bg-warning
-                      {% else %} bg-danger
-                      {% endif %}">
-
-                        {% if task.priority == 'low' %}
-                            Niski
-                        {% elif task.priority == 'medium' %}
-                             Średni
-                        {% else %}
-                                Wysoki
-                         {% endif %}
-                    </span>
-
-
-                    <div class="d-flex gap-2">
-                        <!-- Delete button -->
-                        <form action="{{ url_for('delete_task', task_id=task.id) }}" method="POST">
-                            <button type="submit" class="btn btn-danger btn-sm">
-                                <i class="bi bi-x-circle"></i> Usuń
-                            </button>
-                        </form>
-                        <!-- Edit button -->
-                        <a href="{{ url_for('edit_task', task_id=task.id) }}" class="btn btn-warning btn-sm">
-                            <i class="bi bi-pencil"></i> Edytuj
-                        </a>
-                    </div>
-                </li>
-            {% endfor %}
-        </ul>
-   {% else %}
+        <!-- Table for tasks -->
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col" class="col-4">Zadanie</th>
+                    <th scope="col" class="col-3">Priorytet</th>
+                    <th scope="col" class="col-5">Akcje</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+                    <tr>
+                        <td>{{ task.name }}</td>
+                        <td>
+                            <span class="badge
+                                {% if task.priority == 'low' %} bg-success
+                                {% elif task.priority == 'medium' %} bg-warning
+                                {% else %} bg-danger
+                                {% endif %}">
+                                {% if task.priority == 'low' %}
+                                    Niski
+                                {% elif task.priority == 'medium' %}
+                                    Średni
+                                {% else %}
+                                    Wysoki
+                                {% endif %}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="d-flex justify-content-start gap-3">
+                                <!-- Delete button -->
+                                <form action="{{ url_for('delete_task', task_id=task.id) }}" method="POST">
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="bi bi-x-circle"></i> Usuń
+                                    </button>
+                                </form>
+                                <!-- Edit button -->
+                                <a href="{{ url_for('edit_task', task_id=task.id) }}" class="btn btn-warning btn-sm">
+                                    <i class="bi bi-pencil"></i> Edytuj
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
         <!-- Placeholder if 0 tasks -->
         <p class="text-muted text-center mt-3">Brak aktualnie zadań. Dodaj coś.</p>
     {% endif %}
