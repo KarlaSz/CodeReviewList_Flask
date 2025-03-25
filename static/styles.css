@@ -15,7 +15,9 @@
             background-clip: padding-box;
             box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03);
             padding: 2rem;
-            max-width: 600px;
+            max-width: 100%;
             width: 100%;
+            box-sizing: border-box;
+            min-width: 300px;
             color: white;
         }

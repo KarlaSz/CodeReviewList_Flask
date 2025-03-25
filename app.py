@@ -1,30 +1,36 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify, make_response
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 import os
 
 app = Flask(__name__)
 
-
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{os.path.join(basedir, "todo.db")}'
 db = SQLAlchemy(app)
+
+# Inicialization Flask-Migrate, connecting app with db
+migrate = Migrate(app, db)
 
 #object aplication to interactions
 #model, class which represent table
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
+    priority = db.Column(db.String, nullable=False, default='low') #priority column
 
     def to_dict(self):
-        return {'id': self.id, 'name': self.name}
+        return {'id': self.id, 'name': self.name, 'priority': self.priority}
 
 #start app, get and show items
 @app.route('/', methods=['GET', 'POST'])
 def todo():
     if request.method == 'POST':
         task_name = request.form['task']
+        task_priority = request.form['priority'] #getting priority from form
+
         if task_name.strip():  # check if task is not empty
-            task = Task(name=task_name)
+            task = Task(name=task_name, priority=task_priority)
             db.session.add(task)
             db.session.commit()
         return redirect(url_for('todo')) #redirect to home page
