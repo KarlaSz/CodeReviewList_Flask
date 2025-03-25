@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %} Edycja zadania {% endblock %}
+
+{% block content %}
+  <h1 class="my-4">Edytuj zadania</h1>
+
+  <form action="" method="POST" class="d-flex gap-2">
+    <input
+      type="text"
+      name="task"
+      class="form-control"
+      placeholder="Wpisz nowe zadanie"
+      value="{{ task.name }}"
+      required
+    >
+    <input type="submit" value="Zapisz" class="btn btn-success">
+  </form>
+
+  <a href="{{ url_for('todo') }}" class="btn btn-secondary mt-3">Powrót</a>
+
+{% endblock %}
