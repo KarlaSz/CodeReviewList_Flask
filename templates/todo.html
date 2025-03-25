@@ -24,6 +24,23 @@
             {% for task in tasks %}
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     <span>{{ task.name }}</span>
+
+                    <span class="badge
+                      {% if task.priority == 'low' %} bg-success
+                      {% elif task.priority == 'medium' %} bg-warning
+                      {% else %} bg-danger
+                      {% endif %}">
+
+                        {% if task.priority == 'low' %}
+                            Niski
+                        {% elif task.priority == 'medium' %}
+                             Średni
+                        {% else %}
+                                Wysoki
+                         {% endif %}
+                    </span>
+
+
                     <div class="d-flex gap-2">
                         <!-- Delete button -->
                         <form action="{{ url_for('delete_task', task_id=task.id) }}" method="POST">
