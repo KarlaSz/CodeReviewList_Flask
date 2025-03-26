@@ -28,4 +28,4 @@ This is a simple task management application built with Flask, using SQLAlchemy 
 
 1. Clone the repository:
    ```bash
-   git clone [https://github.com/yourusername/your-repository.git
+   git clone https://github.com/KarlaSz/CodeReviewList_Flask.git
