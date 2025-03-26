@@ -1,7 +1,7 @@
 """Add priority column to Task model
 
 Revision ID: 6d8a5df04b4f
-Revises: 
+Revises:
 Create Date: 2025-03-25 20:46:29.367898
 
 """

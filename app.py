@@ -21,9 +21,11 @@ migrate = Migrate(app, db)
 #model, class which represent db table
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    number_task = db.Column(db.Integer, nullable=False, autoincrement=True)  # auto increment
     name = db.Column(db.String(100), nullable=False)
-    priority = db.Column(db.String, nullable=False) #priority column
+    priority = db.Column(db.String, nullable=False)  # priority column
     is_done = db.Column(db.Boolean, default=False)
+
 
     def to_dict(self):
         return {'id': self.id, 'name': self.name, 'priority': self.priority}
@@ -34,24 +36,28 @@ def todo():
     error_message = None
     if request.method == 'POST':
         task_name = request.form['task']
-        task_priority = request.form['priority'] #getting priority from form
+        task_priority = request.form['priority']  # getting priority from form
 
         existing_task = Task.query.filter_by(name=task_name).first()
 
-        # check if task exist with the same name
+        # check if task exists with the same name
         if existing_task:
-            # Show flash message if task with the same name already exists
             flash('Zadanie o tej nazwie już istnieje!', 'danger')
             return redirect(url_for('todo'))  # redirect to same page
 
         # check if task is not empty
         if task_name.strip():
-            task = Task(name=task_name, priority=task_priority)
+            # Get the next task number (increment from the last one)
+            last_task = Task.query.order_by(Task.number_task.desc()).first()  # get last task based on number_task
+            if last_task:
+                new_task_number = last_task.number_task + 1  # Increment from the last task number
+            else:
+                new_task_number = 1  # If there are no tasks, start from 1
+
+            task = Task(name=task_name, priority=task_priority, number_task=new_task_number)
             db.session.add(task)
             db.session.commit()
             return redirect(url_for('todo'))  # redirect to home page
-
-
 
     tasks = Task.query.all()
     return render_template('todo.html', tasks=tasks)
