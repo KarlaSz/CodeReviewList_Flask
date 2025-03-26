@@ -23,6 +23,7 @@ class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     priority = db.Column(db.String, nullable=False) #priority column
+    is_done = db.Column(db.Boolean, default=False)
 
     def to_dict(self):
         return {'id': self.id, 'name': self.name, 'priority': self.priority}
@@ -100,6 +101,15 @@ def edit_task(task_id):
         return redirect(url_for('todo'))  # after saving back to home page
 
     return render_template('edit_task.html', task=task)
+
+#done or in in progress
+@app.route('/toggle_done/<int:task_id>', methods=['POST'])
+def toggle_done(task_id):
+    task = Task.query.get_or_404(task_id)
+    task.is_done = not task.is_done
+    db.session.commit()
+    return redirect(url_for('todo'))
+
 
 #debugging for testing
 if __name__ == '__main__':

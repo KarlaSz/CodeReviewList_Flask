@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
-{% block title %}Code Review List App{% endblock %}
+{% block title %}Task List App{% endblock %}
 
 {% block content %}
-    <h1 class="text-center mb-4">Code Review Backlog</h1>
+    <h1 class="text-center mb-4">Task Backlog</h1>
 
     <!-- Form for adding new tasks -->
     <form action="" method="POST" class="d-flex mb-4 gap-3">
@@ -41,12 +41,13 @@
                 <tr>
                     <th scope="col" class="col-4">Zadanie</th>
                     <th scope="col" class="col-3">Priorytet</th>
-                    <th scope="col" class="col-5">Akcje</th>
+                    <th scope="col" class="col-2">Status</th>
+                    <th scope="col" class="col-3">Akcje</th>
                 </tr>
             </thead>
             <tbody>
                 {% for task in tasks %}
-                    <tr>
+                    <tr class="{% if task.is_done %}bg-secondaryh{% endif %}">
                         <td>{{ task.name }}</td>
                         <td>
                             <span class="badge
@@ -64,17 +65,30 @@
                             </span>
                         </td>
                         <td>
-                            <div class="d-flex justify-content-start gap-3">
+                            {% if task.is_done %}
+                                ✅ Wykonane
+                            {% else %}
+                                ⏳ W toku
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="d-flex justify-content-start gap-2">
+                                <!-- Edit button -->
+                                <a href="{{ url_for('edit_task', task_id=task.id) }}" class="btn btn-warning btn-sm">
+                                    <i class="bi bi-pencil"></i> Edytuj
+                                </a>
+                                <!-- Done button -->
+                                <form action="{{ url_for('toggle_done', task_id=task.id) }}" method="POST">
+                                    <button type="submit" class="btn btn-info btn-sm">
+                                        <i class="bi bi-check-circle"></i> Done
+                                    </button>
+                                </form>
                                 <!-- Delete button -->
                                 <form action="{{ url_for('delete_task', task_id=task.id) }}" method="POST">
                                     <button type="submit" class="btn btn-danger btn-sm">
                                         <i class="bi bi-x-circle"></i> Usuń
                                     </button>
                                 </form>
-                                <!-- Edit button -->
-                                <a href="{{ url_for('edit_task', task_id=task.id) }}" class="btn btn-warning btn-sm">
-                                    <i class="bi bi-pencil"></i> Edytuj
-                                </a>
                             </div>
                         </td>
                     </tr>
