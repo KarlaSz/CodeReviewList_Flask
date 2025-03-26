@@ -108,7 +108,7 @@ def edit_task(task_id):
 
     return render_template('edit_task.html', task=task)
 
-#done or in in progress
+#done or in progress
 @app.route('/toggle_done/<int:task_id>', methods=['POST'])
 def toggle_done(task_id):
     task = Task.query.get_or_404(task_id)
