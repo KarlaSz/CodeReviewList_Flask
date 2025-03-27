@@ -30,6 +30,12 @@ class Task(db.Model):
     def to_dict(self):
         return {'id': self.id, 'name': self.name, 'priority': self.priority}
 
+def renumber_tasks():
+    tasks = Task.query.order_by(Task.number_task).all()
+    for index, task in enumerate(tasks, start=1):
+        task.number_task = index
+    db.session.commit()
+
 #start app, get and show items
 @app.route('/', methods=['GET', 'POST'])
 def todo():
@@ -94,6 +100,7 @@ def delete_task(task_id):
     task = Task.query.get_or_404(task_id)
     db.session.delete(task)
     db.session.commit()
+    renumber_tasks()
     return redirect(url_for('todo'))
 
 #edit item EP
